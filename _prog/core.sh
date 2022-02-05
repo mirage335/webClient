@@ -51,8 +51,8 @@ _firefox_command() {
 	
 	if [[ -e "$HOME"/core/installations/firefox ]]
 	then
-		_messageNormal 'Launch: ../firefox/firefox'
-		_messagePlain_probe "$HOME"/core/installations/firefox "${currentProcessedArgs[@]}"
+		_messageNormal 'Launch: core/installations/firefox/firefox'
+		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
 		"$HOME"/core/installations/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
