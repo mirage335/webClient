@@ -49,7 +49,20 @@ _firefox_command() {
 	done
 	
 	
-	
+	if [[ -e "$HOME"/core/installations/firefox ]]
+	then
+		_messageNormal 'Launch: ../firefox/firefox'
+		_messagePlain_probe "$HOME"/core/installations/firefox "${currentProcessedArgs[@]}"
+		"$HOME"/core/installations/firefox "${currentProcessedArgs[@]}"
+		return 0
+	fi
+	if [[ -e "$scriptAbsoluteFolder"/../firefox/firefox ]]
+	then
+		_messageNormal 'Launch: ../firefox/firefox'
+		_messagePlain_probe "$scriptAbsoluteFolder"/../firefox/firefox "${currentProcessedArgs[@]}"
+		"$scriptAbsoluteFolder"/../firefox/firefox "${currentProcessedArgs[@]}"
+		return 0
+	fi
 	
 	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
 	then
@@ -124,87 +137,88 @@ _firefox() {
 	_v_firefox "$@"
 }
 
-_firefox_esr_command() {
-	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox ]]
-	then
-		_messageNormal 'Launch: _local/firefox-esr'
-		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
-		"$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
-		return 0
-	fi
-	
-	local firefoxVersion
-	if firefoxVersion=$(firefox-esr --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)
-	#if which 'firefox'
-	#if _wantDep 'firefox'
-	#if false
-	then
-		if [[ "$firefoxVersion" -ge "52" ]]
-		then
-			_messageNormal 'Launch: firefox-esr'
-			_messagePlain_probe firefox-esr "$@"
-			firefox-esr "$@"
-			return 0
-		fi
-	fi
-	
-	#if which 'firefox-esr'
-	#if _wantDep 'firefox-esr'
-	if false
-	then
-		_messageNormal 'Launch: firefox-esr'
-		_messagePlain_probe firefox-esr "$@"
-		firefox-esr "$@"
-		return 0
-	fi
-	
-	return 1
-}
+# WARNING: Not expected worth the hassle of associating 'HTML' files. Historically 'firefox' 'esr' has been usable for 'TiddlyWiki'/'TiddlyFox' . For website development purposes, modern 'TiddlyWiki' seems to have some ability to 'download' replacement HTML files. For personal notes, 'scriptedIllustrator' is much more effective and efficient.
+#_firefox_esr_command() {
+#	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox ]]
+#	then
+#		_messageNormal 'Launch: _local/firefox-esr'
+#		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
+#		"$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
+#		return 0
+#	fi
+#	
+#	local firefoxVersion
+#	if firefoxVersion=$(firefox-esr --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)
+#	#if which 'firefox'
+#	#if _wantDep 'firefox'
+#	#if false
+#	then
+#		if [[ "$firefoxVersion" -ge "52" ]]
+#		then
+#			_messageNormal 'Launch: firefox-esr'
+#			_messagePlain_probe firefox-esr "$@"
+#			firefox-esr "$@"
+#			return 0
+#		fi
+#	fi
+#	
+#	#if which 'firefox-esr'
+#	#if _wantDep 'firefox-esr'
+#	if false
+#	then
+#		_messageNormal 'Launch: firefox-esr'
+#		_messagePlain_probe firefox-esr "$@"
+#		firefox-esr "$@"
+#		return 0
+#	fi
+#	
+#	return 1
+#}
 
-_firefox_esr_editHome_multitasking() {
-	export globalFakeHome="$scriptLocal"/h_esr
-	export actualFakeHome="$scriptLocal"/h_esr
-	export fakeHomeEditLib="false"
-	#export keepFakeHome="false"
-	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" "$@"
-}
+#_firefox_esr_editHome_multitasking() {
+#	export globalFakeHome="$scriptLocal"/h_esr
+#	export actualFakeHome="$scriptLocal"/h_esr
+#	export fakeHomeEditLib="false"
+#	#export keepFakeHome="false"
+#	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" "$@"
+#}
 
 # ATTENTION
 # Override with "ops", point to "_firefox_editHome_multitasking", to allow "remote" instances of firefox for the user/machine global profile.
-_firefox_esr_editHome() {
-	# TODO: Ideally, there should be an automatic check to determine whether a *compatible* firefox instance already existed, allowing "-no-remote" to be dropped.
-	export globalFakeHome="$scriptLocal"/h_esr
-	export actualFakeHome="$scriptLocal"/h_esr
-	export fakeHomeEditLib="false"
-	#export keepFakeHome="false"
-	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
-}
+#_firefox_esr_editHome() {
+#	# TODO: Ideally, there should be an automatic check to determine whether a *compatible* firefox instance already existed, allowing "-no-remote" to be dropped.
+#	export globalFakeHome="$scriptLocal"/h_esr
+#	export actualFakeHome="$scriptLocal"/h_esr
+#	export fakeHomeEditLib="false"
+#	#export keepFakeHome="false"
+#	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
+#}
 
 
-_firefox_esr_userHome_procedure() {
-	export globalFakeHome="$scriptLocal"/h_esr
-	export actualFakeHome="$instancedFakeHome"
-	export fakeHomeEditLib="false"
-	export keepFakeHome="false"
-	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
-}
+#_firefox_esr_userHome_procedure() {
+#	export globalFakeHome="$scriptLocal"/h_esr
+#	export actualFakeHome="$instancedFakeHome"
+#	export fakeHomeEditLib="false"
+#	export keepFakeHome="false"
+#	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
+#}
 
-_firefox_esr_userHome() {
-	export keepFakeHome="false"
-	"$scriptAbsoluteLocation" _firefox_esr_userHome_procedure "$@"
-}
+#_firefox_esr_userHome() {
+#	export keepFakeHome="false"
+#	"$scriptAbsoluteLocation" _firefox_esr_userHome_procedure "$@"
+#}
 
-_v_firefox_esr() {
-	_userQemu "$scriptAbsoluteLocation" _firefox_esr_userHome "$@"
-}
+#_v_firefox_esr() {
+#	_userQemu "$scriptAbsoluteLocation" _firefox_esr_userHome "$@"
+#}
 
-_firefox_esr() {
-	#_firefox_editHome "$@" && return 0
-	_firefox_esr_userHome "$@" && return 0
-	
-	_messageNormal 'Launch: _v_firefox_esr'
-	_v_firefox_esr "$@"
-}
+#_firefox_esr() {
+#	#_firefox_editHome "$@" && return 0
+#	_firefox_esr_userHome "$@" && return 0
+#	
+#	_messageNormal 'Launch: _v_firefox_esr'
+#	_v_firefox_esr "$@"
+#}
 
 _chromium_command() {
 	if _wantDep 'chromium'
@@ -269,8 +283,8 @@ _refresh_anchors() {
 	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_editHome
 	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_editHome_multitasking
 	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_v_firefox
-	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr
-	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr_editHome
+	#cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr
+	#cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr_editHome
 	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_v_firefox
 	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_chromium
 	
