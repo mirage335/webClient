@@ -53,7 +53,7 @@ _firefox_command() {
 	then
 		_messageNormal 'Launch: core/installations/firefox/firefox'
 		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
-		"$HOME"/core/installations/firefox "${currentProcessedArgs[@]}"
+		"$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
 	if [[ -e "$scriptAbsoluteFolder"/../firefox/firefox ]]
