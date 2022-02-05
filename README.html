@@ -1,3 +1,4 @@
+# <html style="size: letter;"> <!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
 #!/usr/bin/env bash
 
 # Dependencies.
@@ -55,21 +56,46 @@ _document_main() {
 #b
 # NOTICE: DOCUMENT
 #__HEADER_uk4uPhB663kVcygT0q_HEADER__
-_t 'Copyright (C) 2022 mirage335
+_t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+Copyright (C) 2022 mirage335
 See the end of the file for license conditions.
 See license.txt for webClient license conditions.
 
 
 Web browser containment framework.
 
-Automatically forces FireFox and Chromium to use a "HOME" folder neighboring the shell script itself, launching a virtual machine if necessary.'
-_heading1 'Usage'
-_o _messagePlain_probe './_firefox'
-
-_o _messagePlain_probe './_firefox_editHome_multitasking'
-
-_o _messagePlain_probe './_chromium'
+Automatically forces FireFox and Chromium to use a "HOME" folder neighboring the shell script itself, launching a virtual machine if necessary.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
+'
+ '_heading1' 'Usage'
+if false; then true; # -->
+<!-- # --><h1>Usage</h1>
+<!--
+fi
+ '_o' '_messagePlain_probe' './_firefox'
+if false; then true; # -->
+<!-- # --><pre style="-webkit-print-color-adjust: exact;background-color:#848484;margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+<!-- # --><span style="color:#1818b2;background-color:#848484;"> ./_firefox</span>
+<!-- # --></pre>
+<!--
+fi
+ '_o' '_messagePlain_probe' './_firefox_editHome_multitasking'
+if false; then true; # -->
+<!-- # --><pre style="-webkit-print-color-adjust: exact;background-color:#848484;margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+<!-- # --><span style="color:#1818b2;background-color:#848484;"> ./_firefox_editHome_multitasking</span>
+<!-- # --></pre>
+<!--
+fi
+ '_o' '_messagePlain_probe' './_chromium'
+if false; then true; # -->
+<!-- # --><pre style="-webkit-print-color-adjust: exact;background-color:#848484;margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+<!-- # --><span style="color:#1818b2;background-color:#848484;"> ./_chromium</span>
+<!-- # --></pre>
+<!--
+fi
 _t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
 
 Will either find binaries for firefox/chromium/etc installed (eg. /usr/bin/firefox) or if available will use binaries installed in overriding locations (eg. ~/core/installations/firefox/firefox, "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox).
 
@@ -77,18 +103,31 @@ Will either find binaries for firefox/chromium/etc installed (eg. /usr/bin/firef
 FireFox will not report "profile in use" errors when run under non-persistent/user modes, which use temporary directories. However, FireFox still cannot be run multiple times under persistent/edit modes if any other FireFox profile is active on the desktop.
 
 Infrequently edited FireFox profiles will cause a "Refresh Firefox" prompt. Add boolean &#39;browser.disableResetPrompt=true&#39; under &#39;about:config&#39; to disable.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
 '
-_heading2 'Fork'
-_t 'Usually, bookmark/password export, and sync services, are sufficient. Usually git repository tracking of entire web browser profile history is not necessary or desirable.
+ '_heading2' 'Fork'
+if false; then true; # -->
+<!-- # --><h2>Fork</h2>
+<!--
+fi
+_t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">Usually, bookmark/password export, and sync services, are sufficient. Usually git repository tracking of entire web browser profile history is not necessary or desirable.
 
 To fork nevertheless...
 
 EITHER use &#39;ubiquitous_bash&#39; fork script and copy &#39;_prog&#39;, &#39;_local/ops.sh&#39;, &#39;_lib/desktop&#39; from &#39;_webClient&#39; (preferable) OR download &#39;webClient&#39; and change git remote origin push/pull URI.
 
-Remove "_local/h" ".gitignore" exlcusion to track web browser profile under git repository.'
-_ _page
-_heading1 'Design'
-_t 'Ubiquitous Bash FakeHome virtualization redirects the apparent home directory as seen by FireFox, Chromium, etc.
+Remove "_local/h" ".gitignore" exlcusion to track web browser profile under git repository.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
+'
+ '_' '_page'
+ '_heading1' 'Design'
+if false; then true; # -->
+<!-- # --><h1>Design</h1>
+<!--
+fi
+_t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">Ubiquitous Bash FakeHome virtualization redirects the apparent home directory as seen by FireFox, Chromium, etc.
 
 If appropriate native binaries are not available, the "nixexevm" virtual machine will be launched. Either a "_local/vm.img" file, or a "$HOME"/core/nixexevm/ubiquitous_bash.sh script, containing a Debian operating system.
 
@@ -101,21 +140,46 @@ _userQemu "$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_fi
 "$scriptAbsoluteLocation" - Absolute path of the "ubiquitous_bash.sh" script itself.
 "_userFakeHome" - Directive to launch with "$HOME" variable pointed at a temporary directory named "h_"<random> .
 "_firefox_command" - FireFox binary found on the system.
-"-no-remote" - Parameter for FireFox itself. Given the "$HOME"/.mozilla directory is temporary, there is no need for process sharing.'
-_ _page
-_heading1 'Future Work'
-_t '*) NOT developing MSW/Cygwin host support. MSW is increasingly less reliable and less secure (due to cloud integration, extensive built-in networking services, advertising incentives, etc) in every way than integrated browser synchronization services. Multiple isolated browser profiles and synchronization of browser profiles by Git/SSH are simply not useful under MSW. MSW is also not usually justified in Virtual Machines, not having any unique compatibility, having a highly inconvenient UI, and possibly imposing too much cost per instance, too much disk consumption, and far too many updates.'
-_page
-_heading1 'Reference'
-_t 'https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
+"-no-remote" - Parameter for FireFox itself. Given the "$HOME"/.mozilla directory is temporary, there is no need for process sharing.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
+'
+ '_' '_page'
+ '_heading1' 'Future Work'
+if false; then true; # -->
+<!-- # --><h1>Future Work</h1>
+<!--
+fi
+_t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+*) NOT developing MSW/Cygwin host support. MSW is increasingly less reliable and less secure (due to cloud integration, extensive built-in networking services, advertising incentives, etc) in every way than integrated browser synchronization services. Multiple isolated browser profiles and synchronization of browser profiles by Git/SSH are simply not useful under MSW. MSW is also not usually justified in Virtual Machines, not having any unique compatibility, having a highly inconvenient UI, and possibly imposing too much cost per instance, too much disk consumption, and far too many updates.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
+'
+ '_page'
+if false; then true; # -->
+<!-- # --><div style="page-break-before: always;margin: 0;padding: 0; border-width: 0px;"> </div>
+<!--
+fi
+ '_heading1' 'Reference'
+if false; then true; # -->
+<!-- # --><h1>Reference</h1>
+<!--
+fi
+_t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
 
 https://blog.mozilla.org/services/2020/09/15/the-future-of-sync/
 	&#39;A lot of folks expected it to be a Backup service. The good news is, now it is a backup service. Sync is more reliable now. We use a distributed database to store your data securely, so we no longer lose databases (or your data echos). There&#39;s a lot of benefit for us as well. We were able to rewrite the service in Rust, a more efficient programming language that lets us run on less machines.&#39;
 
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
 '
-_ _page
-_heading1 'Copyright'
+ '_' '_page'
+ '_heading1' 'Copyright'
+if false; then true; # -->
+<!-- # --><h1>Copyright</h1>
+<!--
+fi
 _t '
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
 This file is part of webClient.
 
 webClient is free software: you can redistribute it and/or modify
@@ -130,7 +194,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with webClient.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+<!-- # --></pre><!-- scriptedIllustrator_markup_uk4uPhB663kVcygT0q
 '
+
+
+
 #__FOOTER_uk4uPhB663kVcygT0q_FOOTER__
 # NOTICE: DOCUMENT
 #y
@@ -333,3 +401,4 @@ exit 0
 __ATTACHMENT_uk4uPhB663kVcygT0q_ATTACHMENT__
 
 
+filename.html # scriptedIllustrator_markup_uk4uPhB663kVcygT0q --> </html>
