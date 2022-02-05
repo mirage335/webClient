@@ -32,7 +32,7 @@ _ub_cksum_special_derivativeScripts_contents() {
 #export ub_setScriptChecksum_disable='true'
 ( [[ -e "$0".nck ]] || [[ "${BASH_SOURCE[0]}" != "${0}" ]] || [[ "$1" == '--profile' ]] || [[ "$1" == '--script' ]] || [[ "$1" == '--call' ]] || [[ "$1" == '--return' ]] || [[ "$1" == '--devenv' ]] || [[ "$1" == '--shell' ]] || [[ "$1" == '--bypass' ]] || [[ "$1" == '--parent' ]] || [[ "$1" == '--embed' ]] || [[ "$1" == '--compressed' ]] || [[ "$0" == "/bin/bash" ]] || [[ "$0" == "-bash" ]] || [[ "$0" == "/usr/bin/bash" ]] || [[ "$0" == "bash" ]] ) && export ub_setScriptChecksum_disable='true'
 export ub_setScriptChecksum_header='1891409836'
-export ub_setScriptChecksum_contents='468291830'
+export ub_setScriptChecksum_contents='2851593095'
 
 # CAUTION: Symlinks may cause problems. Disable this test for such cases if necessary.
 # WARNING: Performance may be crucial here.
@@ -34055,17 +34055,307 @@ _package() {
 
 
 
-
+_test_prog() {
+	_getDep which
+	
+	_getDep firefox
+	_wantGetDep chromium
+	
+	_getDep dolphin
+	
+	_noFireJail 'firefox' && _stop 1
+	_noFireJail 'chromium' && _stop 1
+}
 
 ##### Core
+
+_flag_localURL() {
+	local flagLocalURL
+	flagLocalURL="false"
+	
+	_messagePlain_probe 'checking: flagLocalURL'
+	
+	echo "$1" | grep "^./" >/dev/null 2>&1 && flagLocalURL="true" && _messagePlain_good 'accept: flagLocalURL'
+	echo "$1" | grep "^/" >/dev/null 2>&1 && flagLocalURL="true" && _messagePlain_good 'accept: flagLocalURL'
+	echo "$1" | grep "^file:///" >/dev/null 2>&1 && flagLocalURL="true" && _messagePlain_good 'accept: flagLocalURL'
+	
+	echo "$@" | grep 'http\:\/\/' >/dev/null 2>&1 && flagLocalURL="false" && _messagePlain_warn 'reject: flagLocalURL'
+	echo "$@" | grep 'https\:\/\/' >/dev/null 2>&1 && flagLocalURL="false" && _messagePlain_warn 'reject: flagLocalURL'
+	
+	#Local files may open in a temporary browser instance.
+	[[ "$flagLocalURL" == "true" ]] && return 0
+ 	[[ "$flagLocalURL" != "true" ]] && return 1
+}
+
+_firefox_command() {
+	local currentArgs
+	
+	
+	local currentArg
+	local currentResult
+	local currentProcessedArgs=()
+	
+	local currentFlag_includesProfileDirective
+	
+	for currentArg in "$@"
+	do
+		if [[ "$currentArg" == '-P' ]] || [[ "$currentArg" == '--profile' ]] || [[ "$currentArg" == '--ProfileManager' ]]
+		then
+			currentFlag_includesProfileDirective='true'
+			_messagePlain_probe 'detected: profile directive'
+		fi
+	done
+	if [[ "$currentFlag_includesProfileDirective" != 'true' ]]
+	then
+		currentProcessedArgs+=( '-P' )
+		currentProcessedArgs+=( 'default' )
+	fi
+	#http://stackoverflow.com/questions/15420790/create-array-in-loop-from-number-of-arguments
+	for currentArg in "$@"
+	do
+		currentResult="$currentArg"
+		currentProcessedArgs+=("$currentResult")
+	done
+	
+	
+	
+	
+	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
+	then
+		_messageNormal 'Launch: _local/firefox'
+		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		"$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		return 0
+	fi
+	
+	local firefoxVersion
+	if firefoxVersion=$(firefox --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)
+	#if which 'firefox'
+	#if _wantDep 'firefox'
+	#if false
+	then
+		if [[ "$firefoxVersion" -ge "59" ]]
+		then
+			_messageNormal 'Launch: firefox'
+			_messagePlain_probe firefox "${currentProcessedArgs[@]}"
+			firefox "${currentProcessedArgs[@]}"
+			return 0
+		fi
+	fi
+	
+	#if which 'firefox_quantum'
+	#if _wantDep 'firefox_quantum'
+	if false
+	then
+		_messageNormal 'Launch: firefox_quantum'
+		_messagePlain_probe firefox_quantum "${currentProcessedArgs[@]}"
+		firefox_quantum "${currentProcessedArgs[@]}"
+		return 0
+	fi
+	
+	return 1
+}
+
+_firefox_editHome_multitasking() {
+	if _flag_localURL "$@"
+	then
+		_firefox_esr_userHome "$@"
+		return
+	fi
+	
+	export fakeHome_dbusRunSession_DISABLE="true"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default "$@"
+}
+
+# ATTENTION
+# Override with "ops", point to "_firefox_editHome_multitasking", to allow "remote" instances of firefox for the user/machine global profile.
+_firefox_editHome() {
+	# TODO: Ideally, there should be an automatic check to determine whether a compatible firefox instance already existed, allowing "-no-remote" to be dropped.
+	export fakeHome_dbusRunSession_DISABLE="true"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+}
+
+_firefox_userHome() {
+	#Always use "-no-remote".
+	export fakeHome_dbusRunSession_DISABLE="true"
+	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+}
+
+_v_firefox() {
+	_userQemu "$scriptAbsoluteLocation" _firefox_userHome "$@"
+}
+
+_firefox() {
+	#_firefox_editHome "$@" && return 0
+	_firefox_userHome "$@" && return 0
+	
+	_messageNormal 'Launch: _v_firefox'
+	_v_firefox "$@"
+}
+
+_firefox_esr_command() {
+	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox ]]
+	then
+		_messageNormal 'Launch: _local/firefox-esr'
+		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
+		"$scriptAbsoluteFolder"/_local/setups/firefox-esr/firefox/firefox "$@"
+		return 0
+	fi
+	
+	local firefoxVersion
+	if firefoxVersion=$(firefox-esr --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)
+	#if which 'firefox'
+	#if _wantDep 'firefox'
+	#if false
+	then
+		if [[ "$firefoxVersion" -ge "52" ]]
+		then
+			_messageNormal 'Launch: firefox-esr'
+			_messagePlain_probe firefox-esr "$@"
+			firefox-esr "$@"
+			return 0
+		fi
+	fi
+	
+	#if which 'firefox-esr'
+	#if _wantDep 'firefox-esr'
+	if false
+	then
+		_messageNormal 'Launch: firefox-esr'
+		_messagePlain_probe firefox-esr "$@"
+		firefox-esr "$@"
+		return 0
+	fi
+	
+	return 1
+}
+
+_firefox_esr_editHome_multitasking() {
+	export globalFakeHome="$scriptLocal"/h_esr
+	export actualFakeHome="$scriptLocal"/h_esr
+	export fakeHomeEditLib="false"
+	#export keepFakeHome="false"
+	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" "$@"
+}
+
+# ATTENTION
+# Override with "ops", point to "_firefox_editHome_multitasking", to allow "remote" instances of firefox for the user/machine global profile.
+_firefox_esr_editHome() {
+	# TODO: Ideally, there should be an automatic check to determine whether a *compatible* firefox instance already existed, allowing "-no-remote" to be dropped.
+	export globalFakeHome="$scriptLocal"/h_esr
+	export actualFakeHome="$scriptLocal"/h_esr
+	export fakeHomeEditLib="false"
+	#export keepFakeHome="false"
+	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
+}
+
+
+_firefox_esr_userHome_procedure() {
+	export globalFakeHome="$scriptLocal"/h_esr
+	export actualFakeHome="$instancedFakeHome"
+	export fakeHomeEditLib="false"
+	export keepFakeHome="false"
+	_fakeHome "$scriptAbsoluteLocation" "_firefox_esr_command" -no-remote "$@"
+}
+
+_firefox_esr_userHome() {
+	export keepFakeHome="false"
+	"$scriptAbsoluteLocation" _firefox_esr_userHome_procedure "$@"
+}
+
+_v_firefox_esr() {
+	_userQemu "$scriptAbsoluteLocation" _firefox_esr_userHome "$@"
+}
+
+_firefox_esr() {
+	#_firefox_editHome "$@" && return 0
+	_firefox_esr_userHome "$@" && return 0
+	
+	_messageNormal 'Launch: _v_firefox_esr'
+	_v_firefox_esr "$@"
+}
+
+_chromium_command() {
+	if _wantDep 'chromium'
+	then
+		_messageNormal 'Launch: chromium'
+		_messagePlain_probe chromium "$@"
+		chromium "$@"
+		
+		return 0
+	fi
+	
+	return 1
+}
+
+_chromium_editHome() {
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_chromium_command" "$@"
+}
+
+_chromium_userHome() {
+	#Should not be needed with Chromium.
+	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_chromium_command" "$@"
+}
+
+_v_chromium() {
+	_userQemu "$scriptAbsoluteLocation" _chromium_editHome "$@"
+}
+
+_chromium() {
+	_chromium_editHome "$@" && return 0
+	#_chromium_userHome "$@" && return 0
+	
+	_messageNormal 'Launch: _v_chromium'
+	_v_chromium "$@"
+}
+
+
+_dolphin_userHome() {
+	_messageNormal 'Launch: dolphin'
+	_userFakeHome dolphin --new-window "$@"
+}
+
+_dolphin_editHome() {
+	_messageNormal 'Launch: dolphin'
+	_editFakeHome dolphin --new-window "$@"
+}
+
+_dolphin() {
+	_dolphin_userHome "$@"
+}
+
+_webClient() {
+	_launch "$@"
+}
+
+_fsClient() {
+	_dolphin_userHome "$@"
+}
+
+_refresh_anchors() {
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_webClient
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_editHome
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_editHome_multitasking
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_v_firefox
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_firefox_esr_editHome
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_v_firefox
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_chromium
+	
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_fsClient
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_dolphin
+	cp -a "$scriptAbsoluteFolder"/_anchor "$scriptAbsoluteFolder"/_dolphin_editHome
+}
+
+
 
 
 #####Program
 
 #Typically launches an application - ie. through virtualized container.
 _launch() {
-	false
-	#"$@"
+	_firefox "$@"
 }
 
 #Typically gathers command/variable scripts from other (ie. yaml) file types (ie. AppImage recipes).
@@ -35652,14 +35942,16 @@ CZXWXcRMTo8EmM8i4d
 _generate_compile_bash_prog() {
 	"$scriptAbsoluteLocation" _true
 	
-	return
+	#return
 	
 	rm "$scriptAbsoluteFolder"/ubiquitous_bash.sh
+	
+	"$scriptAbsoluteLocation" _compile_bash fakehome ubiquitous_bash.sh
 	
 	#"$scriptAbsoluteLocation" _compile_bash cautossh cautossh
 	#"$scriptAbsoluteLocation" _compile_bash lean lean.sh
 	
-	"$scriptAbsoluteLocation" _compile_bash core ubiquitous_bash.sh
+	#"$scriptAbsoluteLocation" _compile_bash core ubiquitous_bash.sh
 	
 	#"$scriptAbsoluteLocation" _compile_bash "" ""
 	#"$scriptAbsoluteLocation" _compile_bash ubiquitous_bash ubiquitous_bash.sh
@@ -36742,12 +37034,48 @@ _compile_bash_deps_prog() {
 	true
 }
 
-#Default is to include all, or run a specified configuration. For this reason, it will be more typical to override this entire function, rather than append any additional code.
-# WARNING Find current version of this function at "build/bash/compile_bash.sh"
+# #Default is to include all, or run a specified configuration. For this reason, it will be more typical to override this entire function, rather than append any additional code.
 # _compile_bash_deps() {
 # 	[[ "$1" == "lean" ]] && return 0
 # 	
-# 	false
+# 	if [[ "$1" == "cautossh" ]]
+# 	then
+# 		_deps_os_x11
+# 		_deps_proxy
+# 		_deps_proxy_special
+# 		
+# 		return 0
+# 	fi
+# 	
+# 	if [[ "$1" == "" ]]
+# 	then
+# 		_deps_notLean
+# 		_deps_os_x11
+# 		
+# 		_deps_x11
+# 		_deps_image
+# 		_deps_virt
+# 		_deps_chroot
+# 		_deps_qemu
+# 		_deps_vbox
+# 		_deps_docker
+# 		_deps_wine
+# 		_deps_dosbox
+# 		_deps_msw
+# 		_deps_fakehome
+# 		
+# 		_deps_blockchain
+# 		
+# 		_deps_proxy
+# 		_deps_proxy_special
+#		
+#		_deps_build
+# 		
+# 		_deps_build_bash
+# 		_deps_build_bash_ubiquitous
+# 		
+# 		return 0
+# 	fi
 # }
 
 _vars_compile_bash_prog() {
@@ -36842,7 +37170,7 @@ _compile_bash_environment_prog() {
 
 _compile_bash_installation_prog() {	
 	export includeScriptList
-	true
+	includeScriptList+=( "structure"/installation_prog.sh )
 }
 
 _compile_bash_program_prog() {	

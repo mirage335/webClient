@@ -32,7 +32,7 @@ _ub_cksum_special_derivativeScripts_contents() {
 #export ub_setScriptChecksum_disable='true'
 ( [[ -e "$0".nck ]] || [[ "${BASH_SOURCE[0]}" != "${0}" ]] || [[ "$1" == '--profile' ]] || [[ "$1" == '--script' ]] || [[ "$1" == '--call' ]] || [[ "$1" == '--return' ]] || [[ "$1" == '--devenv' ]] || [[ "$1" == '--shell' ]] || [[ "$1" == '--bypass' ]] || [[ "$1" == '--parent' ]] || [[ "$1" == '--embed' ]] || [[ "$1" == '--compressed' ]] || [[ "$0" == "/bin/bash" ]] || [[ "$0" == "-bash" ]] || [[ "$0" == "/usr/bin/bash" ]] || [[ "$0" == "bash" ]] ) && export ub_setScriptChecksum_disable='true'
 export ub_setScriptChecksum_header='1891409836'
-export ub_setScriptChecksum_contents='2627764544'
+export ub_setScriptChecksum_contents='1733805216'
 
 # CAUTION: Symlinks may cause problems. Disable this test for such cases if necessary.
 # WARNING: Performance may be crucial here.
@@ -6069,14 +6069,16 @@ CZXWXcRMTo8EmM8i4d
 _generate_compile_bash_prog() {
 	"$scriptAbsoluteLocation" _true
 	
-	return
+	#return
 	
 	rm "$scriptAbsoluteFolder"/ubiquitous_bash.sh
+	
+	"$scriptAbsoluteLocation" _compile_bash fakehome ubiquitous_bash.sh
 	
 	#"$scriptAbsoluteLocation" _compile_bash cautossh cautossh
 	#"$scriptAbsoluteLocation" _compile_bash lean lean.sh
 	
-	"$scriptAbsoluteLocation" _compile_bash core ubiquitous_bash.sh
+	#"$scriptAbsoluteLocation" _compile_bash core ubiquitous_bash.sh
 	
 	#"$scriptAbsoluteLocation" _compile_bash "" ""
 	#"$scriptAbsoluteLocation" _compile_bash ubiquitous_bash ubiquitous_bash.sh
@@ -7159,12 +7161,48 @@ _compile_bash_deps_prog() {
 	true
 }
 
-#Default is to include all, or run a specified configuration. For this reason, it will be more typical to override this entire function, rather than append any additional code.
-# WARNING Find current version of this function at "build/bash/compile_bash.sh"
+# #Default is to include all, or run a specified configuration. For this reason, it will be more typical to override this entire function, rather than append any additional code.
 # _compile_bash_deps() {
 # 	[[ "$1" == "lean" ]] && return 0
 # 	
-# 	false
+# 	if [[ "$1" == "cautossh" ]]
+# 	then
+# 		_deps_os_x11
+# 		_deps_proxy
+# 		_deps_proxy_special
+# 		
+# 		return 0
+# 	fi
+# 	
+# 	if [[ "$1" == "" ]]
+# 	then
+# 		_deps_notLean
+# 		_deps_os_x11
+# 		
+# 		_deps_x11
+# 		_deps_image
+# 		_deps_virt
+# 		_deps_chroot
+# 		_deps_qemu
+# 		_deps_vbox
+# 		_deps_docker
+# 		_deps_wine
+# 		_deps_dosbox
+# 		_deps_msw
+# 		_deps_fakehome
+# 		
+# 		_deps_blockchain
+# 		
+# 		_deps_proxy
+# 		_deps_proxy_special
+#		
+#		_deps_build
+# 		
+# 		_deps_build_bash
+# 		_deps_build_bash_ubiquitous
+# 		
+# 		return 0
+# 	fi
 # }
 
 _vars_compile_bash_prog() {
@@ -7259,7 +7297,7 @@ _compile_bash_environment_prog() {
 
 _compile_bash_installation_prog() {	
 	export includeScriptList
-	true
+	includeScriptList+=( "structure"/installation_prog.sh )
 }
 
 _compile_bash_program_prog() {	
