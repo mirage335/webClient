@@ -39,7 +39,7 @@ _firefox_command() {
 	if [[ "$currentFlag_includesProfileDirective" != 'true' ]]
 	then
 		currentProcessedArgs+=( '-P' )
-		currentProcessedArgs+=( 'default' )
+		currentProcessedArgs+=( 'Default User' )
 	fi
 	#http://stackoverflow.com/questions/15420790/create-array-in-loop-from-number-of-arguments
 	for currentArg in "$@"
@@ -108,7 +108,7 @@ _firefox_editHome_multitasking() {
 	fi
 	
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default "$@"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" "$@"
 }
 
 # ATTENTION
@@ -116,13 +116,13 @@ _firefox_editHome_multitasking() {
 _firefox_editHome() {
 	# TODO: Ideally, there should be an automatic check to determine whether a compatible firefox instance already existed, allowing "-no-remote" to be dropped.
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -no-remote "$@"
 }
 
 _firefox_userHome() {
 	#Always use "-no-remote".
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_firefox_command" -no-remote "$@"
 }
 
 _v_firefox() {

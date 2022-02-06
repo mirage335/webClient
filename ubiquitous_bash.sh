@@ -32,7 +32,7 @@ _ub_cksum_special_derivativeScripts_contents() {
 #export ub_setScriptChecksum_disable='true'
 ( [[ -e "$0".nck ]] || [[ "${BASH_SOURCE[0]}" != "${0}" ]] || [[ "$1" == '--profile' ]] || [[ "$1" == '--script' ]] || [[ "$1" == '--call' ]] || [[ "$1" == '--return' ]] || [[ "$1" == '--devenv' ]] || [[ "$1" == '--shell' ]] || [[ "$1" == '--bypass' ]] || [[ "$1" == '--parent' ]] || [[ "$1" == '--embed' ]] || [[ "$1" == '--compressed' ]] || [[ "$0" == "/bin/bash" ]] || [[ "$0" == "-bash" ]] || [[ "$0" == "/usr/bin/bash" ]] || [[ "$0" == "bash" ]] ) && export ub_setScriptChecksum_disable='true'
 export ub_setScriptChecksum_header='1891409836'
-export ub_setScriptChecksum_contents='1797799382'
+export ub_setScriptChecksum_contents='1358142483'
 
 # CAUTION: Symlinks may cause problems. Disable this test for such cases if necessary.
 # WARNING: Performance may be crucial here.
@@ -18232,7 +18232,7 @@ _firefox_command() {
 	if [[ "$currentFlag_includesProfileDirective" != 'true' ]]
 	then
 		currentProcessedArgs+=( '-P' )
-		currentProcessedArgs+=( 'default' )
+		currentProcessedArgs+=( 'Default User' )
 	fi
 	#http://stackoverflow.com/questions/15420790/create-array-in-loop-from-number-of-arguments
 	for currentArg in "$@"
@@ -18301,7 +18301,7 @@ _firefox_editHome_multitasking() {
 	fi
 	
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default "$@"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" "$@"
 }
 
 # ATTENTION
@@ -18309,13 +18309,13 @@ _firefox_editHome_multitasking() {
 _firefox_editHome() {
 	# TODO: Ideally, there should be an automatic check to determine whether a compatible firefox instance already existed, allowing "-no-remote" to be dropped.
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" -no-remote "$@"
 }
 
 _firefox_userHome() {
 	#Always use "-no-remote".
 	export fakeHome_dbusRunSession_DISABLE="true"
-	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_firefox_command" -P default -no-remote "$@"
+	"$scriptAbsoluteLocation" _userFakeHome "$scriptAbsoluteLocation" "_firefox_command" -no-remote "$@"
 }
 
 _v_firefox() {
