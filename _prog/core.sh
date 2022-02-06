@@ -49,11 +49,13 @@ _firefox_command() {
 	done
 	
 	
-	if [[ -e "$HOME"/core/installations/firefox ]]
+	
+	
+	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
 	then
-		_messageNormal 'Launch: core/installations/firefox/firefox'
-		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
-		"$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
+		_messageNormal 'Launch: _local/firefox'
+		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		"$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
 	if [[ -e "$scriptAbsoluteFolder"/../firefox/firefox ]]
@@ -64,13 +66,15 @@ _firefox_command() {
 		return 0
 	fi
 	
-	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
+	
+	if [[ -e "$HOME"/core/installations/firefox ]]
 	then
-		_messageNormal 'Launch: _local/firefox'
-		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
-		"$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		_messageNormal 'Launch: core/installations/firefox/firefox'
+		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
+		"$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
+	
 	
 	local firefoxVersion
 	if firefoxVersion=$(firefox --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)

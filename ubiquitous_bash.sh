@@ -32,7 +32,7 @@ _ub_cksum_special_derivativeScripts_contents() {
 #export ub_setScriptChecksum_disable='true'
 ( [[ -e "$0".nck ]] || [[ "${BASH_SOURCE[0]}" != "${0}" ]] || [[ "$1" == '--profile' ]] || [[ "$1" == '--script' ]] || [[ "$1" == '--call' ]] || [[ "$1" == '--return' ]] || [[ "$1" == '--devenv' ]] || [[ "$1" == '--shell' ]] || [[ "$1" == '--bypass' ]] || [[ "$1" == '--parent' ]] || [[ "$1" == '--embed' ]] || [[ "$1" == '--compressed' ]] || [[ "$0" == "/bin/bash" ]] || [[ "$0" == "-bash" ]] || [[ "$0" == "/usr/bin/bash" ]] || [[ "$0" == "bash" ]] ) && export ub_setScriptChecksum_disable='true'
 export ub_setScriptChecksum_header='1891409836'
-export ub_setScriptChecksum_contents='1358142483'
+export ub_setScriptChecksum_contents='1057711569'
 
 # CAUTION: Symlinks may cause problems. Disable this test for such cases if necessary.
 # WARNING: Performance may be crucial here.
@@ -18242,11 +18242,13 @@ _firefox_command() {
 	done
 	
 	
-	if [[ -e "$HOME"/core/installations/firefox ]]
+	
+	
+	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
 	then
-		_messageNormal 'Launch: core/installations/firefox/firefox'
-		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
-		"$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
+		_messageNormal 'Launch: _local/firefox'
+		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		"$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
 	if [[ -e "$scriptAbsoluteFolder"/../firefox/firefox ]]
@@ -18257,13 +18259,15 @@ _firefox_command() {
 		return 0
 	fi
 	
-	if [[ -e "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox ]]
+	
+	if [[ -e "$HOME"/core/installations/firefox ]]
 	then
-		_messageNormal 'Launch: _local/firefox'
-		_messagePlain_probe "$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
-		"$scriptAbsoluteFolder"/_local/setups/firefox/firefox/firefox "${currentProcessedArgs[@]}"
+		_messageNormal 'Launch: core/installations/firefox/firefox'
+		_messagePlain_probe "$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
+		"$HOME"/core/installations/firefox/firefox "${currentProcessedArgs[@]}"
 		return 0
 	fi
+	
 	
 	local firefoxVersion
 	if firefoxVersion=$(firefox --version | sed 's/Mozilla\ Firefox\ //g' | cut -d\. -f1)
