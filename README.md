@@ -200,7 +200,14 @@ if false; then true; # -->
 <!--
 fi
 _t '
-scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
+scriptedIllustrator_markup_uk4uPhB663kVcygT0q --><!-- # --><pre style="margin-top: 0px;margin-bottom: 0px;white-space: pre-wrap;">
+https://support.mozilla.org/en-US/questions/1317228
+&#39;Note: If you don&#39;t see Import from a File… in the Firefox 
+Lockwise menu, it means the feature is disabled. To enable it, go to the 
+about:config page, find the signon.management.page.fileImport.enabled 
+preference and toggle it to true.&#39;
+
+https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
 
 https://blog.mozilla.org/services/2020/09/15/the-future-of-sync/
 	&#39;A lot of folks expected it to be a Backup service. The good 

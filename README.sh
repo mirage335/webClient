@@ -107,7 +107,10 @@ _heading1 'Future Work'
 _t '*) NOT developing MSW/Cygwin host support. MSW is increasingly less reliable and less secure (due to cloud integration, extensive built-in networking services, advertising incentives, etc) in every way than integrated browser synchronization services. Multiple isolated browser profiles and synchronization of browser profiles by Git/SSH are simply not useful under MSW. MSW is also not usually justified in Virtual Machines, not having any unique compatibility, having a highly inconvenient UI, and possibly imposing too much cost per instance, too much disk consumption, and far too many updates.'
 _page
 _heading1 'Reference'
-_t 'https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
+_t 'https://support.mozilla.org/en-US/questions/1317228
+&#39;Note: If you don&#39;t see Import from a File… in the Firefox Lockwise menu, it means the feature is disabled. To enable it, go to the about:config page, find the signon.management.page.fileImport.enabled preference and toggle it to true.&#39;
+
+https://www.omgubuntu.co.uk/2021/01/chromium-sync-google-api-removed
 
 https://blog.mozilla.org/services/2020/09/15/the-future-of-sync/
 	&#39;A lot of folks expected it to be a Backup service. The good news is, now it is a backup service. Sync is more reliable now. We use a distributed database to store your data securely, so we no longer lose databases (or your data echos). There&#39;s a lot of benefit for us as well. We were able to rewrite the service in Rust, a more efficient programming language that lets us run on less machines.&#39;
