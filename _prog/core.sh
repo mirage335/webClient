@@ -105,11 +105,11 @@ _firefox_command() {
 }
 
 _firefox_editHome_multitasking() {
-	if _flag_localURL "$@"
-	then
-		_firefox_esr_userHome "$@"
-		return
-	fi
+	#if _flag_localURL "$@"
+	#then
+		#_firefox_esr_userHome "$@"
+		#return
+	#fi
 	
 	export fakeHome_dbusRunSession_DISABLE="true"
 	"$scriptAbsoluteLocation" _editFakeHome "$scriptAbsoluteLocation" "_firefox_command" "$@"
